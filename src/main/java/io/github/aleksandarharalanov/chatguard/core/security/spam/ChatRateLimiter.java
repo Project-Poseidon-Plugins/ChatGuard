@@ -18,7 +18,7 @@ public final class ChatRateLimiter {
 
         if (lastTimestamp != 0) {
             long elapsed = timestamp - lastTimestamp;
-            int cooldown = SpamPreventionConfig.getCooldownMsChat().get(PenaltyConfig.getPlayerStrike(player));
+            int cooldown = SpamPreventionConfig.getCooldownMsChat().get(PenaltyConfig.getPlayerStrikes(player));
 
             if (elapsed <= cooldown) {
                 if (SpamPreventionConfig.getWarnPlayerEnabled()) {

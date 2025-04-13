@@ -24,7 +24,7 @@ public final class SignEmbed extends DiscordEmbed {
     protected void setupEmbedDetails() {
         embed.setDescription(String.format(
             "Strike: %d",
-            PenaltyConfig.getPlayerStrike(player) + 1
+            PenaltyConfig.getPlayerStrikes(player) + 1
         ));
 
         embed.setTitle("Sign Filter")

@@ -33,7 +33,7 @@ public final class ChatEmbed extends DiscordEmbed {
         else {
             embed.setDescription(String.format(
                 "Strike: %d - Mute Duration: %s",
-                PenaltyConfig.getPlayerStrike(player) + severity,
+                PenaltyConfig.getPlayerStrikes(player) + severity,
                 PenaltyConfig.getAutoMuteDuration(player)
             ));
         }

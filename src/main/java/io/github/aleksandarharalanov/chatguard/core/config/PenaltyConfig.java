@@ -15,11 +15,11 @@ public final class PenaltyConfig {
         return ChatGuard.getStrikes().getKeys();
     }
 
-    public static int getPlayerStrike(Player player) {
-        return getPlayerStrike(player.getName());
+    public static int getPlayerStrikes(Player player) {
+        return getPlayerStrikes(player.getName());
     }
 
-    public static int getPlayerStrike(String playerName) {
+    public static int getPlayerStrikes(String playerName) {
         return ChatGuard.getStrikes().getInt(playerName + ".strikes", 0);
     }
 
@@ -31,23 +31,23 @@ public final class PenaltyConfig {
         return ChatGuard.getStrikes().getInt(playerName + ".warnings", 0);
     }
 
-    public static void setPlayerStrike(Player player, int newStrike) {
+    public static void setPlayerStrikes(Player player, int newStrike) {
         setPlayerStrike(player.getName(), newStrike);
     }
 
     public static void decrementPlayerStrike(Player player, int amount, long updateTime) {
-        setPlayerStrike(player.getName(), getPlayerStrike(player) - amount, updateTime);
+        setPlayerStrikes(player.getName(), getPlayerStrikes(player) - amount, updateTime);
     }
 
     public static void incrementPlayerStrike(Player player, int amount) {
-        setPlayerStrike(player, getPlayerStrike(player) + amount);
+        setPlayerStrikes(player, getPlayerStrikes(player) + amount);
     }
 
     public static void setPlayerStrike(String playerName, int newStrike) {
-        setPlayerStrike(playerName, newStrike, System.currentTimeMillis());
+        setPlayerStrikes(playerName, newStrike, System.currentTimeMillis());
     }
 
-    public static void setPlayerStrike(String playerName, int newStrike, long updateTime) {
+    public static void setPlayerStrikes(String playerName, int newStrike, long updateTime) {
         ConfigUtil strikes = ChatGuard.getStrikes();
 
         newStrike = Math.max(newStrike, 0);
@@ -78,7 +78,7 @@ public final class PenaltyConfig {
         final List<String> penalties = FilterConfig.getAutoMuteDurations();
         final int maxPenalty = penalties.size() - 1;
 
-        int playerPenalty = getPlayerStrike(player);
+        int playerPenalty = getPlayerStrikes(player);
 
         if (playerPenalty > maxPenalty)
             return penalties.get(maxPenalty);
