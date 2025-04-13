@@ -77,20 +77,33 @@ public final class PenaltyEnforcer {
         if(!FilterConfig.getStrikeDecayEnabled())
             return;
 
+            
+        final int playerStrikeCount = PenaltyConfig.getPlayerStrike(player);
+        if(playerStrikeCount <= 0)
+            return; // player has no strikes
+
         final long lastMuteTime = PenaltyConfig.getLastMuteTime(player);
-        if(lastMuteTime == -1) // player has no strikes
-            return;
 
         final long timePassed = System.currentTimeMillis() - lastMuteTime;
         final long decayPeriod = FilterConfig.getStrikeDecayPeriod();
 
-        final int strikesToRevoke = (int) (timePassed / decayPeriod);
+        final int strikesToRevoke = Math.min(
+            (int) (timePassed / decayPeriod),
+            playerStrikeCount
+        );
 
         // this is only really done to prevent longer decay times than would normally happen under the config
         final long totalRevokePeriod = strikesToRevoke * decayPeriod;
         final long newPlayerUpdatedTime = lastMuteTime + totalRevokePeriod;
 
         PenaltyConfig.decrementPlayerStrike(player, strikesToRevoke, newPlayerUpdatedTime);
+
+        String pointsString = "point";
+        if(strikesToRevoke != 1)
+            pointsString += "s";
+
+        final String coloredMessage = ColorUtil.translateColorCodes(String.format("&aYour ChatGuard strike count has been reduced by %d %s! You have %d remaining", strikesToRevoke, pointsString, playerStrikeCount - strikesToRevoke));
+        player.sendMessage(coloredMessage);
     }
 
     public static void handleWarning(Player player) {
