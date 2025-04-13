@@ -20,6 +20,6 @@ public class PlayerJoinListener extends PlayerListener {
             return;
         }
 
-        PenaltyEnforcer.updatePlayerStrikes(player);
+        PenaltyEnforcer.updatePlayerData(player);
     }
 }
