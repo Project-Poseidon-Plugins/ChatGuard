@@ -32,10 +32,10 @@ public final class FilterFinalizer {
             final String flaggedSection = trigger.getSection();
 
             player.sendMessage(ColorUtil.translateColorCodes(
-                String.format("&cYour message contains the flagged word: '%s'.", badWord)
+                String.format("&cYour message contains the flagged word: '%s'", badWord)
             ));
             player.sendMessage(ColorUtil.translateColorCodes(
-                String.format("&cSection flagged: '%s'.", flaggedSection)
+                String.format("&cSection flagged: '%s'", flaggedSection)
             ));
         }
 
