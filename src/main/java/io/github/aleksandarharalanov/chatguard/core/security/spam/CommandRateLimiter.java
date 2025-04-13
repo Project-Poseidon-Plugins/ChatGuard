@@ -23,7 +23,7 @@ public final class CommandRateLimiter {
 
         if (lastTimestamp != 0) {
             long elapsed = timestamp - lastTimestamp;
-            int cooldown = SpamPreventionConfig.getCooldownMsCommand().get(PenaltyConfig.getPlayerStrike(player));
+            int cooldown = SpamPreventionConfig.getCooldownMsCommand().get(PenaltyConfig.getPlayerStrikes(player));
 
             if (elapsed <= cooldown) {
                 if (SpamPreventionConfig.getWarnPlayerEnabled()) {

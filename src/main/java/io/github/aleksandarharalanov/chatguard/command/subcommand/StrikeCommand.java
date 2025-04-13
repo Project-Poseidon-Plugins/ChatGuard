@@ -29,7 +29,7 @@ public final class StrikeCommand implements CommandExecutor {
                 .filter(key -> key.equalsIgnoreCase(playerName))
                 .findFirst()
                 .orElse(null);
-        int playerStrikeTier = foundKey != null ? PenaltyConfig.getPlayerStrike(foundKey) : -1;
+        int playerStrikeTier = foundKey != null ? PenaltyConfig.getPlayerStrikes(foundKey) : -1;
 
         if (foundKey == null) {
             sender.sendMessage(ColorUtil.translateColorCodes(String.format(

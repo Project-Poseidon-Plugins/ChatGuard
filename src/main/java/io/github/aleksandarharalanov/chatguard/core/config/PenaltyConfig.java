@@ -15,11 +15,11 @@ public final class PenaltyConfig {
         return ChatGuard.getStrikes().getKeys();
     }
 
-    public static int getPlayerStrike(Player player) {
-        return getPlayerStrike(player.getName());
+    public static int getPlayerStrikes(Player player) {
+        return getPlayerStrikes(player.getName());
     }
 
-    public static int getPlayerStrike(String playerName) {
+    public static int getPlayerStrikes(String playerName) {
         return ChatGuard.getStrikes().getInt(playerName + ".strikes", 0);
     }
 
@@ -31,23 +31,23 @@ public final class PenaltyConfig {
         return ChatGuard.getStrikes().getInt(playerName + ".warnings", 0);
     }
 
-    public static void setPlayerStrike(Player player, int newStrike) {
+    public static void setPlayerStrikes(Player player, int newStrike) {
         setPlayerStrike(player.getName(), newStrike);
     }
 
     public static void decrementPlayerStrike(Player player, int amount, long updateTime) {
-        setPlayerStrike(player.getName(), getPlayerStrike(player) - amount, updateTime);
+        setPlayerStrikes(player.getName(), getPlayerStrikes(player) - amount, updateTime);
     }
 
     public static void incrementPlayerStrike(Player player, int amount) {
-        setPlayerStrike(player, getPlayerStrike(player) + amount);
+        setPlayerStrikes(player, getPlayerStrikes(player) + amount);
     }
 
     public static void setPlayerStrike(String playerName, int newStrike) {
-        setPlayerStrike(playerName, newStrike, System.currentTimeMillis());
+        setPlayerStrikes(playerName, newStrike, System.currentTimeMillis());
     }
 
-    public static void setPlayerStrike(String playerName, int newStrike, long updateTime) {
+    public static void setPlayerStrikes(String playerName, int newStrike, long updateTime) {
         ConfigUtil strikes = ChatGuard.getStrikes();
 
         newStrike = Math.max(newStrike, 0);
@@ -56,10 +56,14 @@ public final class PenaltyConfig {
             strikes.removeProperty(playerName);
         else {
             strikes.setProperty(playerName + ".strikes", newStrike);
-            strikes.setProperty(playerName + ".updated", updateTime);
+            strikes.setProperty(playerName + ".muteUpdated", updateTime);
         }
 
         ChatGuard.getStrikes().save();
+    }
+
+    public static void decrementPlayerWarning(Player player, int amount, long updateTime) {
+        setPlayerWarnings(player.getName(), getPlayerWarnings(player) - amount, updateTime);
     }
 
     public static void incrementPlayerWarnings(Player player) {
@@ -71,14 +75,29 @@ public final class PenaltyConfig {
     }
 
     public static void setPlayerWarnings(String playerName, int warnings) {
-        ChatGuard.getStrikes().setProperty(playerName + ".warnings", warnings);
+        setPlayerWarnings(playerName, warnings, System.currentTimeMillis());
+    }
+
+    public static void setPlayerWarnings(String playerName, int newWarning, long updateTime) {
+        ConfigUtil strikes = ChatGuard.getStrikes();
+
+        newWarning = Math.max(newWarning, 0);
+
+        if(newWarning == 0 && getPlayerStrikes(playerName) <= 0)
+            strikes.removeProperty(playerName);
+        else {
+            strikes.setProperty(playerName + ".warnings", newWarning);
+            strikes.setProperty(playerName + ".warnUpdated", updateTime);
+        }
+
+        ChatGuard.getStrikes().save();
     }
 
     public static String getAutoMuteDuration(Player player) {
         final List<String> penalties = FilterConfig.getAutoMuteDurations();
         final int maxPenalty = penalties.size() - 1;
 
-        int playerPenalty = getPlayerStrike(player);
+        int playerPenalty = getPlayerStrikes(player);
 
         if (playerPenalty > maxPenalty)
             return penalties.get(maxPenalty);
@@ -91,7 +110,23 @@ public final class PenaltyConfig {
     }
     
     public static long getLastMuteTime(String playerName) {
-        final String lastUpdatedString = ChatGuard.getStrikes().getString(playerName + ".updated");
+        final String lastUpdatedString = ChatGuard.getStrikes().getString(playerName + ".muteUpdated");
+        if(lastUpdatedString == null)
+            return -1;
+
+        try {
+            return Long.parseLong(lastUpdatedString);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static long getLastWarnTime(Player player) {
+        return getLastWarnTime(player.getName());
+    }
+    
+    public static long getLastWarnTime(String playerName) {
+        final String lastUpdatedString = ChatGuard.getStrikes().getString(playerName + ".warnUpdated");
         if(lastUpdatedString == null)
             return -1;
 
