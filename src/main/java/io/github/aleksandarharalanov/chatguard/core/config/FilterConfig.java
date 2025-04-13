@@ -45,8 +45,24 @@ public final class FilterConfig {
         return ChatGuard.getConfig().getBoolean("filter.auto-mute.strike-decay.enabled", true);
     }
 
+    public static boolean getWarningDecayEnabled() {
+        return ChatGuard.getConfig().getBoolean("filter.auto-mute.warning-decay.enabled", true);
+    }
+
     public static long getStrikeDecayPeriod() {
         final String configString = ChatGuard.getConfig().getString("filter.auto-mute.strike-decay.period");
+
+        try {
+            final long futureTime = TimeFormatter.parseDateDiff(configString, true);
+
+            return futureTime - System.currentTimeMillis();
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static long getWarningDecayPeriod() {
+        final String configString = ChatGuard.getConfig().getString("filter.auto-mute.warning-decay.period");
 
         try {
             final long futureTime = TimeFormatter.parseDateDiff(configString, true);

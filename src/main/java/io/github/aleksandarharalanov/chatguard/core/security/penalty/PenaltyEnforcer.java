@@ -73,12 +73,15 @@ public final class PenaltyEnforcer {
         return muteHandler;
     }
 
-    public static void updatePlayerStrikes(Player player) {
-        if(!FilterConfig.getStrikeDecayEnabled())
-            return;
+    public static void updatePlayerData(Player player) {
+        if(FilterConfig.getStrikeDecayEnabled())
+            updatePlayerStrikes(player);
+        if(FilterConfig.getWarningDecayEnabled())
+            updatePlayerWarnings(player);
+    }
 
-            
-        final int playerStrikeCount = PenaltyConfig.getPlayerStrike(player);
+    private static void updatePlayerStrikes(Player player) {
+        final int playerStrikeCount = PenaltyConfig.getPlayerStrikes(player);
         if(playerStrikeCount <= 0)
             return; // player has no strikes
 
@@ -103,6 +106,35 @@ public final class PenaltyEnforcer {
             pointsString += "s";
 
         final String coloredMessage = ColorUtil.translateColorCodes(String.format("&aYour ChatGuard strike count has been reduced by %d %s! You have %d remaining", strikesToRevoke, pointsString, playerStrikeCount - strikesToRevoke));
+        player.sendMessage(coloredMessage);
+    }
+
+    private static void updatePlayerWarnings(Player player) {
+        final int playerWarningCount = PenaltyConfig.getPlayerWarnings(player);
+        if(playerWarningCount <= 0)
+            return; // player has no warnings
+
+        final long lastWarnTime = PenaltyConfig.getLastWarnTime(player);
+
+        final long timePassed = System.currentTimeMillis() - lastWarnTime;
+        final long decayPeriod = FilterConfig.getWarningDecayPeriod();
+
+        final int warningsToRevoke = Math.min(
+            (int) (timePassed / decayPeriod),
+            playerWarningCount
+        );
+
+        // this is only really done to prevent longer decay times than would normally happen under the config
+        final long totalRevokePeriod = warningsToRevoke * decayPeriod;
+        final long newPlayerUpdatedTime = lastWarnTime + totalRevokePeriod;
+
+        PenaltyConfig.decrementPlayerWarning(player, warningsToRevoke, newPlayerUpdatedTime);
+
+        String pointsString = "point";
+        if(warningsToRevoke != 1)
+            pointsString += "s";
+
+        final String coloredMessage = ColorUtil.translateColorCodes(String.format("&aYour ChatGuard warning count has been reduced by %d %s! You have %d remaining", warningsToRevoke, pointsString, playerWarningCount - warningsToRevoke));
         player.sendMessage(coloredMessage);
     }
 
