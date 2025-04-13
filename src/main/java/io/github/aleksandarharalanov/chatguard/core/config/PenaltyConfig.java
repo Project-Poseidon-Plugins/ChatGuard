@@ -63,7 +63,7 @@ public final class PenaltyConfig {
     }
 
     public static void decrementPlayerWarning(Player player, int amount, long updateTime) {
-        setPlayerWarnings(player.getName(), amount, updateTime);
+        setPlayerWarnings(player.getName(), getPlayerWarnings(player) - amount, updateTime);
     }
 
     public static void incrementPlayerWarnings(Player player) {
@@ -83,7 +83,7 @@ public final class PenaltyConfig {
 
         newWarning = Math.max(newWarning, 0);
 
-        if(newWarning == 0 && getPlayerWarnings(playerName) <= 0)
+        if(newWarning == 0 && getPlayerStrikes(playerName) <= 0)
             strikes.removeProperty(playerName);
         else {
             strikes.setProperty(playerName + ".warnings", newWarning);
