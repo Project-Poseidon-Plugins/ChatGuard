@@ -69,6 +69,36 @@ public final class ConfigUtil extends Configuration {
         }
     }
 
+    // copied private method out of Configuration
+    private static Integer castInt(Object o) {
+        if (o == null) {
+           return null;
+        } else if (o instanceof Byte) {
+           return Integer.valueOf((Byte)o);
+        } else if (o instanceof Integer) {
+           return (Integer)o;
+        } else if (o instanceof Double) {
+           return (int)((double)o);
+        } else if (o instanceof Float) {
+           return (int)(float)o;
+        } else {
+           return o instanceof Long ? (int)(long)o : null;
+        }
+     }
+
+    /**
+     * The super inplementation will save the default value if one doesnt exist at the storage location. This override does not.
+     */
+    @Override
+    public int getInt(String path, int def) {
+        Integer o = castInt(this.getProperty(path));
+        if (o == null) {
+            return def;
+        } else {
+            return o;
+        }
+    }
+
     /**
      * Creates the parent directories for the configuration file if they do not exist.
      * <p>
