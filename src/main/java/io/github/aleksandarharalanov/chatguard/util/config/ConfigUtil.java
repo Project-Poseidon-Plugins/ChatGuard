@@ -92,11 +92,11 @@ public final class ConfigUtil extends Configuration {
     @Override
     public int getInt(String path, int def) {
         Integer o = castInt(this.getProperty(path));
-        if (o == null) {
+
+        if (o == null)
             return def;
-        } else {
-            return o;
-        }
+
+        return o;
     }
 
     /**
