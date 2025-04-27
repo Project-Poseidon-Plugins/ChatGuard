@@ -11,12 +11,10 @@ import java.awt.Color;
 public final class SignEmbed extends DiscordEmbed {
 
     private final String trigger;
-    private final int severity;
 
-    public SignEmbed(JavaPlugin plugin, Player player, String content, String trigger, int severity) {
+    public SignEmbed(JavaPlugin plugin, Player player, String content, String trigger) {
         super(plugin, player, content);
         this.trigger = trigger;
-        this.severity = severity;
         setupBaseEmbed();
     }
 
