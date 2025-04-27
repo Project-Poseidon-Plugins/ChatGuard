@@ -38,7 +38,7 @@ public final class ChatEmbed extends DiscordEmbed {
 
         embed.setTitle("Chat Filter")
                 .addField("Content:", content, false)
-                .addField("Trigger:", String.format(DiscordConfig.getLogCensorEnabled() ? "||`%s`||" : "`%s`", trigger), true)
+                .addField("Trigger:", String.format("`%s`", trigger), true)
                 .setColor(Color.decode(DiscordConfig.getEmbedColor(LogType.CHAT)));
     }
 }
