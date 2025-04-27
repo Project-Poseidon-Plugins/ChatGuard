@@ -11,12 +11,10 @@ import java.awt.Color;
 public final class SignEmbed extends DiscordEmbed {
 
     private final String trigger;
-    private final int severity;
 
-    public SignEmbed(JavaPlugin plugin, Player player, String content, String trigger, int severity) {
+    public SignEmbed(JavaPlugin plugin, Player player, String content, String trigger) {
         super(plugin, player, content);
         this.trigger = trigger;
-        this.severity = severity;
         setupBaseEmbed();
     }
 
@@ -29,7 +27,7 @@ public final class SignEmbed extends DiscordEmbed {
 
         embed.setTitle("Sign Filter")
                 .addField("Content:", content, false)
-                .addField("Trigger:", String.format(DiscordConfig.getLogCensorEnabled() ? "||`%s`||" : "`%s`", trigger), true)
+                .addField("Trigger:", String.format("`%s`", trigger), true)
                 .setColor(Color.decode(DiscordConfig.getEmbedColor(LogType.SIGN)));
     }
 }

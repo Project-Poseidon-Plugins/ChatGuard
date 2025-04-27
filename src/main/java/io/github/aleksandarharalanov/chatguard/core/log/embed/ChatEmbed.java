@@ -11,13 +11,11 @@ import java.awt.Color;
 public final class ChatEmbed extends DiscordEmbed {
 
     private final String trigger;
-    private final int severity;
     private final boolean warned;
 
-    public ChatEmbed(JavaPlugin plugin, Player player, String content, String trigger, int severity, boolean warned) {
+    public ChatEmbed(JavaPlugin plugin, Player player, String content, String trigger, boolean warned) {
         super(plugin, player, content);
         this.trigger = trigger;
-        this.severity = severity;
         this.warned = warned;
         setupBaseEmbed();
     }
@@ -27,20 +25,20 @@ public final class ChatEmbed extends DiscordEmbed {
         if(warned) {
             embed.setDescription(String.format(
                 "Warning: %d",
-                PenaltyConfig.getPlayerWarnings(player) + 1
+                PenaltyConfig.getPlayerWarnings(player)
             ));
         }
         else {
             embed.setDescription(String.format(
                 "Strike: %d - Mute Duration: %s",
-                PenaltyConfig.getPlayerStrikes(player) + severity,
+                PenaltyConfig.getPlayerStrikes(player),
                 PenaltyConfig.getAutoMuteDuration(player)
             ));
         }
 
         embed.setTitle("Chat Filter")
                 .addField("Content:", content, false)
-                .addField("Trigger:", String.format(DiscordConfig.getLogCensorEnabled() ? "||`%s`||" : "`%s`", trigger), true)
+                .addField("Trigger:", String.format("`%s`", trigger), true)
                 .setColor(Color.decode(DiscordConfig.getEmbedColor(LogType.CHAT)));
     }
 }

@@ -34,24 +34,21 @@ public final class DiscordLogger {
         webhook.setAvatarUrl(webhookIcon);
 
         
-        String trigger = "";
-        int severity = 0;
+        String trigger = "<TRIGGER WAS NULL>";
         
-        if(triggerFilter != null) {
+        if(triggerFilter != null)
             trigger = triggerFilter.getName();
-            severity = triggerFilter.getSeverity();
-        }
 
         DiscordEmbed embed;
         switch (logType) {
             case CHAT:
-                embed = new ChatEmbed(ChatGuard.getInstance(), player, content, trigger, severity, warned);
+                embed = new ChatEmbed(ChatGuard.getInstance(), player, content, trigger, warned);
                 break;
             case SIGN:
-                embed = new SignEmbed(ChatGuard.getInstance(), player, content, trigger, severity);
+                embed = new SignEmbed(ChatGuard.getInstance(), player, content, trigger);
                 break;
             case NAME:
-                embed = new NameEmbed(ChatGuard.getInstance(), player, content, trigger, severity);
+                embed = new NameEmbed(ChatGuard.getInstance(), player, content, trigger);
                 break;
             case CAPTCHA:
                 embed = new CaptchaEmbed(ChatGuard.getInstance(), player, content);

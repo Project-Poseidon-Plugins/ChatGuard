@@ -22,11 +22,6 @@ public final class FilterFinalizer {
         final int severity = filterTerm.getSeverity();
         final boolean shouldWarn = shouldWarn(logType, player, severity);
 
-        AudioCuePlayer.play(logType, player, false);
-        ConsoleLogger.log(logType, player, content);
-        FileLogger.log(logType, player, content);
-        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn);
-
         if (shouldSendFeedback(logType)) {
             final String badWord = filterTerm.getName();
             final String flaggedSection = trigger.getSection();
@@ -41,11 +36,15 @@ public final class FilterFinalizer {
 
         if (shouldWarn) {
             PenaltyEnforcer.handleWarning(player);
-            return; // prevent the mute from being issued
+        } else {
+            PenaltyEnforcer.incrementStrikeTier(logType, player, severity);
+            PenaltyEnforcer.processMute(logType, player);
         }
 
-        PenaltyEnforcer.incrementStrikeTier(logType, player, severity);
-        PenaltyEnforcer.processMute(logType, player);
+        AudioCuePlayer.play(logType, player, false);
+        ConsoleLogger.log(logType, player, content);
+        FileLogger.log(logType, player, content);
+        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn);
     }
 
     private static boolean shouldWarn(LogType logType, Player player, int severity) {
