@@ -22,14 +22,21 @@ public final class FilterHandler {
     }
 
     private static boolean isBlocked(LogType logType, Player player, String content) {
-        String sanitizedContent = ContentHandler.sanitizeContent(content, FilterConfig.getWhitelist());
-        FilterTrigger trigger = FilterDetector.checkFilters(sanitizedContent);
-
-        if (trigger == null) {
+        FilterTrigger trigger = GetBlockedTrigger(content);
+        if(trigger == null)
             return false;
-        }
 
         FilterFinalizer.finalizeActions(logType, player, content, trigger);
         return true;
+    }
+
+    public static FilterTrigger GetBlockedTrigger(String content) {
+        String sanitizedContent = ContentHandler.sanitizeContent(content, FilterConfig.getWhitelist());
+        FilterTrigger trigger = FilterDetector.checkFilters(sanitizedContent);
+
+        if (trigger == null)
+            return null;
+
+        return trigger;
     }
 }
