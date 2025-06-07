@@ -51,7 +51,7 @@ public final class DiscordLogger {
                 embed = new SignEmbed(ChatGuard.getInstance(), player, content, trigger, severity);
                 break;
             case NAME:
-                embed = new NameEmbed(ChatGuard.getInstance(), player, content, trigger, severity);
+                embed = new NameEmbed(ChatGuard.getInstance(), player, content, trigger);
                 break;
             case CAPTCHA:
                 embed = new CaptchaEmbed(ChatGuard.getInstance(), player, content);
