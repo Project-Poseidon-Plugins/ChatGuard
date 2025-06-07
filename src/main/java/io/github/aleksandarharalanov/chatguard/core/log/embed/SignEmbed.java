@@ -37,15 +37,12 @@ public final class SignEmbed extends DiscordEmbed {
     }
 
     private String getLocationString() {
-        String output = String.format(
+        return String.format(
             "Location: %s, `/tppos %d %d %d`",
             violationLocation.getWorld().getName(),
             (int)violationLocation.getX(),
             (int)violationLocation.getY(),
             (int)violationLocation.getZ()
         );
-
-        System.out.println(output);
-        return output;
     }
 }
