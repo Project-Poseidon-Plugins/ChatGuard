@@ -25,11 +25,6 @@ public final class FilterFinalizer {
         final boolean shouldWarn = shouldWarn(logType, player, severity);
         final Location violationLocation = trigger.getViolationLocation();
 
-        AudioCuePlayer.play(logType, player, false);
-        ConsoleLogger.log(logType, player, content);
-        FileLogger.log(logType, player, content);
-        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn, violationLocation);
-
         if (shouldSendFeedback(logType)) {
             final String badWord = filterTerm.getName();
             final String flaggedSection = trigger.getSection();
@@ -52,7 +47,7 @@ public final class FilterFinalizer {
         AudioCuePlayer.play(logType, player, false);
         ConsoleLogger.log(logType, player, content);
         FileLogger.log(logType, player, content);
-        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn, null);
+        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn, violationLocation);
     }
 
     private static boolean shouldWarn(LogType logType, Player player, int severity) {
