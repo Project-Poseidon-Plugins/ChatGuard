@@ -1,6 +1,7 @@
 package io.github.aleksandarharalanov.chatguard.listener.player;
 
 import io.github.aleksandarharalanov.chatguard.core.security.filter.FilterHandler;
+import io.github.aleksandarharalanov.chatguard.core.security.filter.FilterTrigger;
 import io.github.aleksandarharalanov.chatguard.core.data.IPData;
 import io.github.aleksandarharalanov.chatguard.util.misc.ColorUtil;
 import org.bukkit.entity.Player;
@@ -17,9 +18,18 @@ public class PlayerLoginListener extends PlayerListener {
         }
 
         if (FilterHandler.isPlayerNameBlocked(player)) {
+            // this is pretty garbage, but i cant be asked to do this properly...
+            FilterTrigger trigger = FilterHandler.GetBlockedTrigger(player.getName());
+            String filterName = trigger.getFilterTerm().getName();
+
             event.disallow(
-                    PlayerLoginEvent.Result.KICK_OTHER,
-                    ColorUtil.translateColorCodes("&cName contains bad words.")
+                PlayerLoginEvent.Result.KICK_OTHER,
+                ColorUtil.translateColorCodes(
+                    String.format(
+                        "&cYour name contains the bad word '%s'.",
+                        filterName
+                    )
+                )
             );
         }
     }

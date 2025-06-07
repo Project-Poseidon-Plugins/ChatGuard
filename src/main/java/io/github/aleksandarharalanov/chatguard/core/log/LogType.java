@@ -5,7 +5,7 @@ import java.util.EnumSet;
 public enum LogType {
 
     CHAT(EnumSet.of(LogAttribute.FILTER, LogAttribute.STRIKE, LogAttribute.MUTE, LogAttribute.WARN, LogAttribute.AUDIO)),
-    SIGN(EnumSet.of(LogAttribute.FILTER, LogAttribute.STRIKE, LogAttribute.WARN, LogAttribute.AUDIO)),
+    SIGN(EnumSet.of(LogAttribute.FILTER, LogAttribute.STRIKE, LogAttribute.MUTE, LogAttribute.WARN, LogAttribute.AUDIO)),
     NAME(EnumSet.of(LogAttribute.FILTER)),
     CAPTCHA(EnumSet.of(LogAttribute.AUDIO));
 

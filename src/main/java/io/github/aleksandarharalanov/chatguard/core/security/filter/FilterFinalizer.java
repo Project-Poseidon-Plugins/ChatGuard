@@ -44,11 +44,15 @@ public final class FilterFinalizer {
 
         if (shouldWarn) {
             PenaltyEnforcer.handleWarning(player);
-            return; // prevent the mute from being issued
+        } else {
+            PenaltyEnforcer.incrementStrikeTier(logType, player, severity);
+            PenaltyEnforcer.processMute(logType, player);
         }
 
-        PenaltyEnforcer.incrementStrikeTier(logType, player, severity);
-        PenaltyEnforcer.processMute(logType, player);
+        AudioCuePlayer.play(logType, player, false);
+        ConsoleLogger.log(logType, player, content);
+        FileLogger.log(logType, player, content);
+        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn, null);
     }
 
     private static boolean shouldWarn(LogType logType, Player player, int severity) {

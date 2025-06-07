@@ -21,7 +21,7 @@ public final class NameEmbed extends DiscordEmbed {
     @Override
     protected void setupEmbedDetails() {
         embed.setTitle("Name Filter")
-                .addField("Trigger:", String.format(DiscordConfig.getLogCensorEnabled() ? "||`%s`||" : "`%s`", trigger), true)
+                .addField("Trigger:", String.format("`%s`", trigger), true)
                 .setColor(Color.decode(DiscordConfig.getEmbedColor(LogType.NAME)));
     }
 

@@ -32,7 +32,7 @@ public final class SignEmbed extends DiscordEmbed {
         embed.setTitle("Sign Filter")
                 .addField("Content:", content, false)
                 .addField("Location:", getLocationString(), false)
-                .addField("Trigger:", String.format(DiscordConfig.getLogCensorEnabled() ? "||`%s`||" : "`%s`", trigger), true)
+                .addField("Trigger:", String.format("`%s`", trigger), true)
                 .setColor(Color.decode(DiscordConfig.getEmbedColor(LogType.SIGN)));
     }
 

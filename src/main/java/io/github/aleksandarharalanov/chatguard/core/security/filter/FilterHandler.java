@@ -28,9 +28,8 @@ public final class FilterHandler {
     }
 
     private static boolean isBlocked(LogType logType, Player player, String content, Location violationLocation) {
-        String sanitizedContent = ContentHandler.sanitizeContent(content, FilterConfig.getWhitelist());
+        FilterTrigger trigger = GetBlockedTrigger(content);
 
-        FilterTrigger trigger = FilterDetector.checkFilters(sanitizedContent);
         if (trigger == null)
             return false;
 
@@ -38,5 +37,15 @@ public final class FilterHandler {
 
         FilterFinalizer.finalizeActions(logType, player, content, trigger);
         return true;
+    }
+
+    public static FilterTrigger GetBlockedTrigger(String content) {
+        String sanitizedContent = ContentHandler.sanitizeContent(content, FilterConfig.getWhitelist());
+        FilterTrigger trigger = FilterDetector.checkFilters(sanitizedContent);
+
+        if (trigger == null)
+            return null;
+
+        return trigger;
     }
 }
