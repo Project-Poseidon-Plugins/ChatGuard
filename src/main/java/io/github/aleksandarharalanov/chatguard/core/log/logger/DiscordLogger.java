@@ -7,6 +7,7 @@ import io.github.aleksandarharalanov.chatguard.core.log.LogType;
 import io.github.aleksandarharalanov.chatguard.core.log.embed.*;
 import io.github.aleksandarharalanov.chatguard.util.log.DiscordUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -16,10 +17,10 @@ public final class DiscordLogger {
     private DiscordLogger() {}
 
     public static void log(LogType logType, Player player, String content) {
-        log(logType, player, content, null, false);
+        log(logType, player, content, null, false, null);
     }
 
-    public static void log(LogType logType, Player player, String content, FilterTerm triggerFilter, boolean warned) 
+    public static void log(LogType logType, Player player, String content, FilterTerm triggerFilter, boolean warned, Location violationLocation) 
     {
         if (!DiscordConfig.getDiscordLogEnabled(logType)) {
             return;
@@ -48,7 +49,7 @@ public final class DiscordLogger {
                 embed = new ChatEmbed(ChatGuard.getInstance(), player, content, trigger, severity, warned);
                 break;
             case SIGN:
-                embed = new SignEmbed(ChatGuard.getInstance(), player, content, trigger, severity);
+                embed = new SignEmbed(ChatGuard.getInstance(), player, content, trigger, violationLocation);
                 break;
             case NAME:
                 embed = new NameEmbed(ChatGuard.getInstance(), player, content, trigger);

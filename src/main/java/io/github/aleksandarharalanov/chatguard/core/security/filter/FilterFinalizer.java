@@ -11,6 +11,8 @@ import io.github.aleksandarharalanov.chatguard.core.log.logger.FileLogger;
 import io.github.aleksandarharalanov.chatguard.core.misc.AudioCuePlayer;
 import io.github.aleksandarharalanov.chatguard.core.security.penalty.PenaltyEnforcer;
 import io.github.aleksandarharalanov.chatguard.util.misc.ColorUtil;
+
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public final class FilterFinalizer {
@@ -21,11 +23,12 @@ public final class FilterFinalizer {
         final FilterTerm filterTerm = trigger.getFilterTerm();
         final int severity = filterTerm.getSeverity();
         final boolean shouldWarn = shouldWarn(logType, player, severity);
+        final Location violationLocation = trigger.getViolationLocation();
 
         AudioCuePlayer.play(logType, player, false);
         ConsoleLogger.log(logType, player, content);
         FileLogger.log(logType, player, content);
-        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn);
+        DiscordLogger.log(logType, player, content, filterTerm, shouldWarn, violationLocation);
 
         if (shouldSendFeedback(logType)) {
             final String badWord = filterTerm.getName();

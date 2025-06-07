@@ -14,7 +14,7 @@ public class SignChangeListener extends BlockListener {
         Player player = event.getPlayer();
 
         if (hasBypassPermission(player)) return;
-        if (handleSignFiltering(player, event));
+        handleSignFiltering(player, event);
     }
 
     private static boolean hasBypassPermission(Player player) {
@@ -22,7 +22,7 @@ public class SignChangeListener extends BlockListener {
     }
 
     private static boolean handleSignFiltering(Player player, SignChangeEvent event) {
-        if (FilterConfig.getSignEnabled() && FilterHandler.isSignContentBlocked(player, event.getLines())) {
+        if (FilterConfig.getSignEnabled() && FilterHandler.isSignContentBlocked(player, event)) {
             event.setCancelled(true);
             return true;
         }
